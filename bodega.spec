@@ -46,8 +46,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
-/usr/bin/eucadw-import
-/usr/bin/eucadw-report
+/usr/bin/eucadw-import-data
+/usr/bin/eucadw-generate-report
 %dir /etc/eucadw
 %config /etc/eucadw/eucadw.cfg
 
