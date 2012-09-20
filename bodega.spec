@@ -22,6 +22,7 @@ BuildArch:      noarch
 
 BuildRequires:  eucalyptus-common-java-libs
 BuildRequires:  python%{?__python_ver}-devel
+BuildRequires:  ant
 
 Requires:       eucalyptus-common-java-libs
 
