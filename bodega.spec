@@ -20,7 +20,10 @@ BuildRoot:      %{_tmppath}/bodega-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
+BuildRequires:  eucalyptus-common-java-libs
 BuildRequires:  python%{?__python_ver}-devel
+
+Requires:       eucalyptus-common-java-libs
 
 %description
 CLI tools for the Eucalyptus Datawarehouse
@@ -29,15 +32,28 @@ CLI tools for the Eucalyptus Datawarehouse
 %setup -q -n bodega-%{version}%{?tar_suffix}
 
 %build
-cd eucadw && %{__python} setup.py build
+# Build CLI tools
+pushd eucadw
+%{__python} setup.py build
+popd
+
+# Build bodega.jar
+ant
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd eucadw && %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
+# Install CLI tools
+pushd eucadw
+%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/eucadw
 install -pm 644 etc/eucadw.cfg $RPM_BUILD_ROOT/etc/eucadw/eucadw.cfg
+popd
+
+# Install bodega.jar
+install -d $RPM_BUILD_ROOT/usr/share/eucalyptus
+install -pm 644 dist/bodega.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -48,10 +64,14 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/*
 /usr/bin/eucadw-import-data
 /usr/bin/eucadw-generate-report
+/usr/share/eucalyptus/bodega.jar
 %dir /etc/eucadw
 %config /etc/eucadw/eucadw.cfg
 
 %changelog
+* Wed Sep 19 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.2
+- Added java library
+
 * Fri Aug 31 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.1
 - Initial package build
 
