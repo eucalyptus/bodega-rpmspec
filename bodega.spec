@@ -22,13 +22,26 @@ BuildArch:      noarch
 
 BuildRequires:  eucalyptus-common-java-libs
 BuildRequires:  python%{?__python_ver}-devel
-BuildRequires:  ant
+BuildRequires:  python%{?__python_ver}-setuptools
+BuildRequires:  ant >= 1.7.0
 BuildRequires:  apache-ivy
+BuildRequires:  java-devel >= 1:1.6.0
+BuildRequires:  jpackage-utils
 
-Requires:       eucalyptus-common-java-libs
+Requires:       python%{?__python_ver}
+Requires:       bodega-libs = %{version}-%{release}
 
 %description
 CLI tools for the Eucalyptus Datawarehouse
+
+%package -n bodega-libs
+Summary:        CLI tools for the Eucalyptus Datawarehouse
+Requires:       java >= 1:1.6.0
+Requires:       jpackage-utils
+Conflicts:      eucalyptus-common-java-libs
+
+%description -n bodega-libs
+Java libraries for Eucalyptus Datawarehouse CLI tools
 
 %prep
 %setup -q -n bodega-%{version}%{?tar_suffix}
@@ -56,6 +69,9 @@ popd
 # Install bodega.jar
 install -d $RPM_BUILD_ROOT/usr/share/eucalyptus
 install -pm 644 dist/bodega.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
+install -pm 644 lib/*.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
+
+rm -f $RPM_BUILD_ROOT/usr/share/eucalyptus/ant-*.jar
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -66,11 +82,16 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/*
 /usr/bin/eucadw-import-data
 /usr/bin/eucadw-generate-report
-/usr/share/eucalyptus/bodega.jar
 %dir /etc/eucadw
 %config /etc/eucadw/eucadw.cfg
 
+%files -n bodega-libs
+/usr/share/eucalyptus/*.jar
+
 %changelog
+* Thu Sep 20 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.3
+- Now bundling java libraries in bodega-libs package
+
 * Wed Sep 19 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.2
 - Added java library
 
