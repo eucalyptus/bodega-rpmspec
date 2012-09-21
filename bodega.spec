@@ -73,6 +73,9 @@ install -pm 644 lib/*.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
 
 rm -f $RPM_BUILD_ROOT/usr/share/eucalyptus/ant-*.jar
 
+install -d $RPM_BUILD_ROOT/usr/share/eucalyptus/licenses
+install -pm 644 /usr/share/eucalyptus/licenses/*.LICENSE $RPM_BUILD_ROOT/usr/share/eucalyptus/licenses
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -84,11 +87,19 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/eucadw-generate-report
 %dir /etc/eucadw
 %config /etc/eucadw/eucadw.cfg
+%doc README.md LICENSE
 
 %files -n bodega-libs
+%defattr(-,root,root,-)
+%dir /usr/share/eucalyptus
 /usr/share/eucalyptus/*.jar
+%dir /usr/share/eucalyptus/licenses
+%doc /usr/share/eucalyptus/licenses/*.LICENSE
 
 %changelog
+* Fri Sep 21 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.4
+- Add licenses
+
 * Thu Sep 20 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.3
 - Now bundling java libraries in bodega-libs package
 
