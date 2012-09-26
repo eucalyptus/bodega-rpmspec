@@ -37,6 +37,7 @@ CLI tools for the Eucalyptus Datawarehouse
 
 %package -n bodega-libs
 Summary:        CLI tools for the Eucalyptus Datawarehouse
+Group:          Applications/System
 Requires:       java >= 1:1.6.0
 Requires:       jpackage-utils
 Conflicts:      eucalyptus-common-java-libs
@@ -98,6 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc /usr/share/eucalyptus/licenses/*.LICENSE
 
 %changelog
+* Tue Sep 25 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.5
+- Add BR of ant-linuxtools
+- Add group field for bodega-libs subpackage
+
 * Fri Sep 21 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.4
 - Add licenses
 
