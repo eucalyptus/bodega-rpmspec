@@ -21,6 +21,7 @@ BuildRoot:      %{_tmppath}/bodega-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 BuildRequires:  eucalyptus-common-java-libs
+BuildRequires:  ant-linuxtools
 BuildRequires:  python%{?__python_ver}-devel
 BuildRequires:  python%{?__python_ver}-setuptools
 BuildRequires:  ant >= 1.7.0
