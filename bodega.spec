@@ -54,7 +54,7 @@ pushd eucadw
 %{__python} setup.py build
 popd
 
-# Build bodega.jar
+# Build jar
 ant
 
 
@@ -68,9 +68,9 @@ install -d $RPM_BUILD_ROOT/etc/eucadw
 install -pm 644 etc/eucadw.cfg $RPM_BUILD_ROOT/etc/eucadw/eucadw.cfg
 popd
 
-# Install bodega.jar
+# Install jar
 install -d $RPM_BUILD_ROOT/usr/share/eucalyptus
-install -pm 644 dist/bodega.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
+install -pm 644 dist/eucalyptus-datawarehouse-3.2.0.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
 install -pm 644 lib/*.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
 
 rm -f $RPM_BUILD_ROOT/usr/share/eucalyptus/ant-*.jar
