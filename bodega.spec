@@ -74,8 +74,8 @@ install -pm 644 lib/*.jar $RPM_BUILD_ROOT%{_javadir}/%{name}
 
 rm -f $RPM_BUILD_ROOT%{_javadir}/ant-*.jar
 
-install -d $RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}/jar-licenses
-install -pm 644 /usr/share/eucalyptus/licenses/*.LICENSE $RPM_BUILD_ROOT%{_defaultdocdir}/jar-licenses
+install -d $RPM_BUILD_ROOT%{_javadir}/%{name}/licenses
+install -pm 644 /usr/share/eucalyptus/licenses/*.LICENSE $RPM_BUILD_ROOT%{_javadir}/%{name}/licenses
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -92,8 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n eucadw-libs
 %defattr(-,root,root,-)
 %{_javadir}/%{name}
-%dir %{_defaultdocdir}/jar-licenses
-%doc %{_defaultdocdir}/jar-licenses/*.LICENSE
+%doc /usr/share/java/eucadw/licenses/*.LICENSE
 
 %changelog
 * Thu Sep 27 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.6
