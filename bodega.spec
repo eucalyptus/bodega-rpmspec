@@ -7,16 +7,16 @@
 
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
-Name:           python%{?__python_ver}-bodega
-Version:        0
+Name:           eucadw
+Version:        3.2.0
 Release:        0%{?build_id:.%build_id}%{?dist}
-Summary:        Client user interface for Eucalyptus
+Summary:        CLI tools for the Eucalyptus Datawarehouse
 
 Group:          Applications/System
 License:        GPLv3 
 URL:            http://www.eucalyptus.com
-Source0:        bodega-%{version}%{?tar_suffix}.tar.gz
-BuildRoot:      %{_tmppath}/bodega-%{version}-%{release}-root-%(%{__id_u} -n)
+Source0:        %{name}-%{version}%{?tar_suffix}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
@@ -30,27 +30,26 @@ BuildRequires:  java-devel >= 1:1.6.0
 BuildRequires:  jpackage-utils
 
 Requires:       python%{?__python_ver}
-Requires:       bodega-libs = %{version}-%{release}
+Requires:       eucadw-libs = %{version}-%{release}
 
 %description
 CLI tools for the Eucalyptus Datawarehouse
 
-%package -n bodega-libs
-Summary:        CLI tools for the Eucalyptus Datawarehouse
+%package -n eucadw-libs
+Summary:        Java libraries for %{name}
 Group:          Applications/System
 Requires:       java >= 1:1.6.0
 Requires:       jpackage-utils
-Conflicts:      eucalyptus-common-java-libs
 
-%description -n bodega-libs
+%description -n eucadw-libs
 Java libraries for Eucalyptus Datawarehouse CLI tools
 
 %prep
-%setup -q -n bodega-%{version}%{?tar_suffix}
+%setup -q -n eucadw-%{version}%{?tar_suffix}
 
 %build
 # Build CLI tools
-pushd eucadw
+pushd %{name}
 %{__python} setup.py build
 popd
 
@@ -62,21 +61,21 @@ ant
 rm -rf $RPM_BUILD_ROOT
 
 # Install CLI tools
-pushd eucadw
+pushd %{name}
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/eucadw
 install -pm 644 etc/eucadw.cfg $RPM_BUILD_ROOT/etc/eucadw/eucadw.cfg
 popd
 
 # Install jar
-install -d $RPM_BUILD_ROOT/usr/share/eucalyptus
-install -pm 644 dist/eucalyptus-datawarehouse-3.2.0.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
-install -pm 644 lib/*.jar $RPM_BUILD_ROOT/usr/share/eucalyptus
+install -d $RPM_BUILD_ROOT%{_javadir}/%{name}
+install -pm 644 dist/eucalyptus-datawarehouse-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}/
+install -pm 644 lib/*.jar $RPM_BUILD_ROOT%{_javadir}/%{name}
 
-rm -f $RPM_BUILD_ROOT/usr/share/eucalyptus/ant-*.jar
+rm -f $RPM_BUILD_ROOT%{_javadir}/ant-*.jar
 
-install -d $RPM_BUILD_ROOT/usr/share/eucalyptus/licenses
-install -pm 644 /usr/share/eucalyptus/licenses/*.LICENSE $RPM_BUILD_ROOT/usr/share/eucalyptus/licenses
+install -d $RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}/jar-licenses
+install -pm 644 /usr/share/eucalyptus/licenses/*.LICENSE $RPM_BUILD_ROOT%{_defaultdocdir}/jar-licenses
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -85,20 +84,22 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
-/usr/bin/eucadw-import-data
-/usr/bin/eucadw-generate-report
+/usr/bin/eucadw-*
 %dir /etc/eucadw
 %config /etc/eucadw/eucadw.cfg
 %doc README.md LICENSE
 
-%files -n bodega-libs
+%files -n eucadw-libs
 %defattr(-,root,root,-)
-%dir /usr/share/eucalyptus
-/usr/share/eucalyptus/*.jar
-%dir /usr/share/eucalyptus/licenses
-%doc /usr/share/eucalyptus/licenses/*.LICENSE
+%{_javadir}/%{name}
+%dir %{_defaultdocdir}/jar-licenses
+%doc %{_defaultdocdir}/jar-licenses/*.LICENSE
 
 %changelog
+* Thu Sep 27 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.6
+- Package renamed to eucadw
+- Changed location of jars to /usr/share/java/eucadw
+
 * Tue Sep 25 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.5
 - Add BR of ant-linuxtools
 - Add group field for bodega-libs subpackage
