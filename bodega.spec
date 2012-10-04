@@ -56,7 +56,6 @@ popd
 # Build jar
 ant
 
-
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -91,10 +90,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n eucadw-libs
 %defattr(-,root,root,-)
-%{_javadir}/%{name}
-%doc /usr/share/java/eucadw/licenses/*.LICENSE
+%dir %{_javadir}/%{name}
+%{_javadir}/%{name}/*.jar
+%dir %{_javadir}/%{name}/licenses
+%doc %{_javadir}/%{name}/licenses/*.LICENSE
 
 %changelog
+* Thu Oct 04 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.7
+- Fixed license files being included twice
+
 * Thu Sep 27 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.6
 - Package renamed to eucadw
 - Changed location of jars to /usr/share/java/eucadw
