@@ -71,7 +71,8 @@ install -d $RPM_BUILD_ROOT%{_javadir}/%{name}
 install -pm 644 dist/eucalyptus-datawarehouse-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}/
 install -pm 644 lib/*.jar $RPM_BUILD_ROOT%{_javadir}/%{name}
 
-rm -f $RPM_BUILD_ROOT%{_javadir}/ant-*.jar
+# Only needed for build
+rm -f $RPM_BUILD_ROOT%{_javadir}/%{name}/ant-*.jar
 
 install -d $RPM_BUILD_ROOT%{_javadir}/%{name}/licenses
 install -pm 644 /usr/share/eucalyptus/licenses/*.LICENSE $RPM_BUILD_ROOT%{_javadir}/%{name}/licenses
@@ -96,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_javadir}/%{name}/licenses/*.LICENSE
 
 %changelog
+* Sun Oct 07 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.8
+- Remove ant jar files since they should not be installed
+
 * Thu Oct 04 2012 Eucalyptus Release Engineering <support@eucalyptus.com> - 0-0.7
 - Fixed license files being included twice
 
